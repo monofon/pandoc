@@ -604,9 +604,10 @@ blockToMarkdown' opts t@(Table caption aligns widths headers rows) =  do
                writerColumns opts >= 8 * numcols -> (id,) <$>
                 gridTable opts blockListToMarkdown
                   (all null headers) aligns' widths' headers rows
-            | isEnabled Ext_raw_html opts -> fmap (id,) $
-                   (text . T.unpack) <$>
-                   (writeHtml5String def $ Pandoc nullMeta [t])
+            -- Never write raw html tables
+            -- | isEnabled Ext_raw_html opts -> fmap (id,) $
+            --        (text . T.unpack) <$>
+            --        (writeHtml5String def $ Pandoc nullMeta [t])
             | hasSimpleCells &&
               isEnabled Ext_pipe_tables opts -> fmap (id,) $
                    pipeTable (all null headers) aligns' rawHeaders rawRows
